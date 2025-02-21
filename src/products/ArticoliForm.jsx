@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
 // const articoliIniziali = [
@@ -29,6 +29,7 @@ import axios from "axios";
 const formDatiInizio = {
     title: "",
     // autore: "",
+    image: "",
     content: "",
     // categoria: "",
 };
@@ -50,6 +51,11 @@ const ArticoliForm = () => {
             )
     }
 
+
+    useEffect(fetchArticoli, []);
+
+
+
     function gestioneFormDati(e) {
         setFormDati((datiFormCorrenti) => ({
             ...datiFormCorrenti,
@@ -66,7 +72,7 @@ const ArticoliForm = () => {
     return (
         <>
 
-            <button onClick={fetchArticoli}>Carica articoli</button>
+            {/* <button onClick={fetchArticoli}>Carica articoli</button> */}
 
             <form action="#" onSubmit={gestioneInvio}>
                 <input
@@ -78,11 +84,12 @@ const ArticoliForm = () => {
                 />
                 <input
                     type="text"
-                    name="autore"
+                    name="image"
                     onChange={gestioneFormDati}
-                    value={formDati.autore}
-                    placeholder="inserire nome"
+                    value={formDati.image}
+                    placeholder="inserire img"
                 />
+
                 <textarea
                     type="text"
                     name="content"
@@ -102,6 +109,7 @@ const ArticoliForm = () => {
             {articoli.map((articolo) => (
                 <div key={articolo.id}>
                     <h3>{articolo.title}</h3>
+                    <img src={articolo.image} alt={articolo.title}></img>
                     {/* <p>{articolo.autore}</p> */}
                     <p>{articolo.content}</p>
                     {/* <p>{articolo.categoria}</p> */}
