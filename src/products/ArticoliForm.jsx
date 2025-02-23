@@ -31,6 +31,7 @@ const formDatiInizio = {
     // autore: "",
     image: "",
     content: "",
+    tags: [],
     // categoria: "",
 };
 
@@ -43,9 +44,9 @@ const ArticoliForm = () => {
 
     function fetchArticoli() {
         axios.get("http://localhost:3000/posts")
-            .then((response) =>
-                // console.log(response.data),
-                setArticoli(response.data)
+            .then((res) =>
+                // console.log(res.data),
+                setArticoli(res.data)
 
 
             )
@@ -57,15 +58,25 @@ const ArticoliForm = () => {
 
 
     function gestioneFormDati(e) {
+        const value = e.target.name === "tags" ? e.target.value.split(",") : e.target.value;
         setFormDati((datiFormCorrenti) => ({
             ...datiFormCorrenti,
-            [e.target.name]: e.target.value,
+            [e.target.name]: value,
         }));
     }
 
-    function gestioneInvio(event) {
-        event.preventDefault();
-        setArticoli((articoliCorrenti) => [...articoliCorrenti, { id: articoliCorrenti[articoliCorrenti.length - 1].id + 1, ...formDati }]);
+    function gestioneInvio(e) {
+        e.preventDefault();
+        axios.post("http://localhost:3000/posts/", formDati)
+            .then(res => {
+                // console.log(res.data);
+                setArticoli((articoliCorrenti) => [...articoliCorrenti, res.data])
+            }
+            )
+            .catch(err => console.log(err))
+
+        // setArticoli((articoliCorrenti) => [...articoliCorrenti, { id: articoliCorrenti[articoliCorrenti.length - 1].id + 1, ...formDati }]);
+        setFormDati(formDatiInizio);
     }
 
 
@@ -99,10 +110,10 @@ const ArticoliForm = () => {
                 />
                 <input
                     type="text"
-                    name="categoria"
+                    name="tags"
                     onChange={gestioneFormDati}
-                    value={formDati.categoria}
-                    placeholder="genere"
+                    value={formDati.tags}
+                    placeholder="tags"
                 />
                 <button type="submit">Add</button>
             </form>
