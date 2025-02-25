@@ -121,7 +121,7 @@ const ArticoliForm = () => {
                 <div key={articolo.id}>
                     <h3>{articolo.title}</h3>
                     <img src={articolo.image} alt={articolo.title}></img>
-                    {/* <p>{articolo.autore}</p> */}
+                    <p>{articolo.tags.join(", ")}</p>
                     <p>{articolo.content}</p>
                     {/* <p>{articolo.categoria}</p> */}
                 </div>
